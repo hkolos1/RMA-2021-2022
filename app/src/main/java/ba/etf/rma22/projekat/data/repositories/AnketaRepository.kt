@@ -11,10 +11,9 @@ class AnketaRepository {
         init {
         }
         fun getMyAnkete(): List<Anketa> {
-            /* --- Zbog testa koji zatvara aplikaciju i testira,
-             nisam uspio spasiti podatke --- */
 
-           /*
+
+
             var lista = mutableListOf<Anketa>()
             var brojac = 0
             while(brojac < user.istrazivanja.size){
@@ -28,9 +27,9 @@ class AnketaRepository {
                 brojac++
            }
             return lista
-            */
 
-            return ankete()
+
+            //return ankete()
         }
 
 

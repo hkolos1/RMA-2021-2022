@@ -25,25 +25,25 @@ class AnketaTest {
     @Test
     fun GetMyAnkete() {
         val anketa = AnketaRepository.getMyAnkete()
-        assertEquals(anketa.size, ankete().size)
+        assertEquals(anketa.size, 2)
     }
 
     @Test
     fun GetDoneAnkete() {
         val anketa = AnketaRepository.getDone()
-        assertEquals(anketa.size, 4)
+        assertEquals(anketa.size, 1)
     }
 
     @Test
     fun GetFutureAnkete() {
         val anketa = AnketaRepository.getFuture()
-        assertEquals(anketa.size, 4)
+        assertEquals(anketa.size, 0)
     }
 
     @Test
     fun GetNotTakenAnkete() {
         val anketa = AnketaRepository.getNotTaken()
-        assertEquals(anketa.size, 2)
+        assertEquals(anketa.size, 0)
     }
 
     @Test

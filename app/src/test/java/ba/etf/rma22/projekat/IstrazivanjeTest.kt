@@ -21,7 +21,7 @@ class IstrazivanjeTest {
     @Test
     fun TestGetUpisani() {
         val upisani=IstrazivanjeRepository.getUpisani()
-        assertEquals(upisani.size, 0)
+        assertEquals(upisani.size, 2)
     }
 
     @Test
