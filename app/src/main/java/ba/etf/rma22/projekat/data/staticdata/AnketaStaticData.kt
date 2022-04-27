@@ -9,51 +9,6 @@ fun datum(dan : Int, mjesec : Int, godina : Int) : Date {
         time
     }
 }
-/*---Hardkodirane ankete za Korisnika---*/
-fun mojeAnkete(): List<Anketa> {
-    return listOf(
-        Anketa(
-            "Anketa 1",
-            "Istraživanje broj 1",
-            datum(10,4,2022),
-            datum(10,4,2022),
-            datum(10,4,2022),
-            2,"Grupa1", 1.0f
-        ),
-        Anketa(
-            "Anketa 9",
-            "Istraživanje broj 9",
-            datum(1,4,2022),
-            datum(2,7,2022),
-            null,
-            5,"Grupa3", 0.4f
-        ),
-        Anketa(
-            "Anketa 2",
-            "Istraživanje broj 2",
-            datum(10,8,2022),
-            datum(10,9,2022),
-            null,
-            5,"Grupa1", 0.5f
-        ),
-        Anketa(
-            "Anketa 7",
-            "Istraživanje broj 7",
-            datum(4,4,2022),
-            datum(25,8,2022),
-            null,
-            5,"Grupa3", 0.0f
-        ),
-        Anketa(
-            "Anketa 13",
-            "Istraživanje broj 13",
-            datum(2,4,2022),
-            datum(4,4,2022),
-            null,
-            5,"Grupa2", 0.6f
-        )
-    )
-}
 
 /*---StaticData za ankete---*/
 fun ankete(): List<Anketa> {
@@ -85,8 +40,8 @@ fun ankete(): List<Anketa> {
         Anketa(
             "Anketa 4",
             "Istraživanje broj 4",
-            datum(2,3,2022),
-            datum(3,4,2022),
+            datum(1,4,2021),
+            datum(2,7,2022),
             null,
             5,"Grupa2", 0.5f
         ),
@@ -125,8 +80,8 @@ fun ankete(): List<Anketa> {
         Anketa(
             "Anketa 9",
             "Istraživanje broj 9",
-            datum(1,4,2022),
-            datum(2,7,2022),
+            datum(2,3,2022),
+            datum(3,4,2022),
             null,
             5,"Grupa3", 0.8f
         ),

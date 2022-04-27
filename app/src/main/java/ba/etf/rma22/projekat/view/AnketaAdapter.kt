@@ -14,7 +14,10 @@ import java.util.*
 
 
 class AnketaAdapter(
-    private var ankete: List<Anketa>) : RecyclerView.Adapter<AnketaAdapter.AnketaViewHolder>() {
+
+    private var ankete: List<Anketa>,
+    private val onItemClicked: (anketa:Anketa) -> Unit
+    ) : RecyclerView.Adapter<AnketaAdapter.AnketaViewHolder>() {
 
     fun updateAnkete(anketa: List<Anketa>) {
         this.ankete = anketa
@@ -38,18 +41,21 @@ class AnketaAdapter(
 
     override fun getItemCount(): Int = ankete.size
     override fun onBindViewHolder(holder: AnketaViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            onItemClicked(ankete[position])
+        }
 
         /*Formatiranje datuma u formatu dan,mjesec,godina*/
         val formatter = SimpleDateFormat("dd.MM.yyyy")
 
-            /*---Plavi status = Anketa urađena---*/
+        /*---Plavi status = Anketa urađena---*/
         if(ankete[position].datumRada!=null){
             holder.status.setImageResource(R.drawable.plava)
             holder.progress.setProgress(((ankete[position].progres*100).toInt()));
             holder.datum.text = "Anketa urađena: " + formatter.format(ankete[position].datumRada).toString();
         }
         else if(ankete[position].datumPocetak.before(Calendar.getInstance().time) &&
-                ankete[position].datumKraj.after(Calendar.getInstance().time) && ankete[position].datumRada == null){
+            ankete[position].datumKraj.after(Calendar.getInstance().time) && ankete[position].datumRada == null){
 
             /*---Zeleni status = Aktivna anketa---*/
             holder.status.setImageResource(R.drawable.zelena)

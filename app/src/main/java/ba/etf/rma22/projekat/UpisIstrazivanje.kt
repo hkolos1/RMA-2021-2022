@@ -36,9 +36,9 @@ class UpisIstrazivanje : AppCompatActivity() {
 
         dugmeIstrazivanje.isEnabled=false
 
-        var odabirGodine = 0
-        var odabirIstrazivanja = 0
-        var odabirGrupe = 0
+        var odabirGodine : Int
+        var odabirIstrazivanja : Int
+        var odabirGrupe : Int
 
         //Umjesto praznog stringa postavljanje placeholdera
         val listaGodina = listOf<String>("Godina","1","2","3","4","5")
