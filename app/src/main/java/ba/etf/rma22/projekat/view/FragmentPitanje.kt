@@ -39,7 +39,7 @@ class FragmentPitanje(pitanje: Pitanje, adapter: ViewPagerAdapter) : Fragment() 
         var view = inflater.inflate(R.layout.fragment_pitanje, container, false)
 
         tekst = view.findViewById(R.id.tekstPitanja)
-        tekst.text = pitanje.tekst
+        tekst.text = pitanje.tekstPitanja
         listaOdgovora = view.findViewById(R.id.odgovoriLista)
         dugmeZaustavi = view.findViewById(R.id.dugmeZaustavi)
         listaOdgovora.adapter =

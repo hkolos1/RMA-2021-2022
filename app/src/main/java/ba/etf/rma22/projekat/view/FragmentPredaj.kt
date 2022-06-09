@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.models.Anketa
-import java.lang.Math.round
 import java.util.*
 
 class FragmentPredaj(var anketa: Anketa) : Fragment() {
@@ -32,11 +31,17 @@ class FragmentPredaj(var anketa: Anketa) : Fragment() {
     }
 
     //Funkcija za zaokruživanje na progressBar-u
-    fun zaokruziProgress(progressFloat: Float) : Int {
-        var progressValue = round(progressFloat*10)
-        if(progressValue % 2 != 0)
-            progressValue += 1
-        return progressValue * 10
+    private fun zaokruziProgress(pro:Int):Int{
+        var a = pro%20
+        var noviProgress : Int
+        if(a==0)
+            return pro
+        if(a<10)
+            noviProgress = pro-a
+        else noviProgress = pro+20-a
+        if(noviProgress>100)
+            noviProgress=100
+        return noviProgress
     }
 
     override fun onCreateView(

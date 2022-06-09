@@ -1,10 +1,7 @@
 package ba.etf.rma22.projekat.viewmodel
 
-import ba.etf.rma22.projekat.data.repositories.AnketaRepository.Companion.getAll
-import ba.etf.rma22.projekat.data.repositories.UserRepository
-
 class UserViewModel {
-    fun dodajUpisanoIstrazivanje(godina: String, istrazivanje: String, grupa: String){
+    /*fun dodajUpisanoIstrazivanje(godina: String, istrazivanje: String, grupa: String){
         UserRepository.user.trenutnaGodina = godina.toInt()
         for(anketa in getAll()){
             if(anketa.nazivIstrazivanja == istrazivanje && anketa.nazivGrupe == grupa){
@@ -13,5 +10,5 @@ class UserViewModel {
                 UserRepository.user.grupe.add(grupa)
             }
         }
-    }
+    }*/
 }

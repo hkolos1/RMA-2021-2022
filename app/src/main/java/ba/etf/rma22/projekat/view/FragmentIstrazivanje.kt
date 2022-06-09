@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.Fragment
 import ba.etf.rma22.projekat.R
+import ba.etf.rma22.projekat.data.models.Grupa
 import ba.etf.rma22.projekat.data.models.Istrazivanje
 import ba.etf.rma22.projekat.data.repositories.IstrazivanjeRepository.Companion.getUpisani
 import ba.etf.rma22.projekat.data.repositories.UserRepository.Companion.odabranaGrupa
@@ -17,7 +15,6 @@ import ba.etf.rma22.projekat.data.repositories.UserRepository.Companion.odabrano
 import ba.etf.rma22.projekat.data.repositories.UserRepository.Companion.porukaGrupa
 import ba.etf.rma22.projekat.data.repositories.UserRepository.Companion.porukaIstrazivanje
 import ba.etf.rma22.projekat.data.repositories.UserRepository.Companion.user
-import ba.etf.rma22.projekat.viewmodel.GrupaViewModel
 import ba.etf.rma22.projekat.viewmodel.IstrazivanjeViewModel
 import ba.etf.rma22.projekat.viewmodel.UserViewModel
 
@@ -29,12 +26,12 @@ class FragmentIstrazivanje : Fragment() {
                 this.fragmentAdapter = adapter
             }
     }
+
     private lateinit var fragmentAdapter: ViewPagerAdapter
     private lateinit var spinnerGodina: Spinner
     private lateinit var spinnerIstrazivanje: Spinner
     private lateinit var spinnerGrupa: Spinner
     private var istrazivanjeViewModel: IstrazivanjeViewModel = IstrazivanjeViewModel()
-    private var grupaViewModel: GrupaViewModel = GrupaViewModel()
     private var userViewModel: UserViewModel = UserViewModel()
     private lateinit var dugmeIstrazivanje: Button
 
@@ -85,35 +82,12 @@ class FragmentIstrazivanje : Fragment() {
                     odabirGodine = position
                 }
                 dugmeIstrazivanje.isEnabled = false
-                val listaIstrazivanja = mutableListOf<String>()
-                listaIstrazivanja.add("Istraživanje")
+
                 spinnerIstrazivanje.adapter = ArrayAdapter(inflater.context, android.R.layout.simple_list_item_1, listaIstrazivanja)
 
-                if (user.trenutnaGodina != 0) {
-                    spinnerIstrazivanje.isEnabled = true
-                    var istrazivanjaSaGodine: MutableList<Istrazivanje> = mutableListOf<Istrazivanje>()
-                    for (P in istrazivanjeViewModel.getIstrazivanjaByGodina(listaGodina[position].toInt())) {
-                        istrazivanjaSaGodine.add(P)
-                    }
-                    for (upisan in getUpisani()) {
-                        for (P in istrazivanjeViewModel.getIstrazivanjaByGodina(listaGodina[position].toInt())) {
-                            if (upisan.naziv == P.naziv) {
-                                istrazivanjaSaGodine.remove(upisan)
-                            }
-                        }
-                    }
-                    for (P in istrazivanjaSaGodine) {
-                        listaIstrazivanja.add(P.naziv)
-                    }
-                    spinnerIstrazivanje.adapter = ArrayAdapter(
-                        inflater.context,
-                        android.R.layout.simple_list_item_1,
-                        listaIstrazivanja
-                    )
-                    spinnerIstrazivanje.setSelection(odabranoIstrazivanje)
-                } else {
-                    spinnerIstrazivanje.isEnabled = false
-                }
+                istrazivanjeViewModel.getIstrazivanja(1,onSuccess = ::onSuccess, onError = ::onError)
+
+
 
                 /*Spinner za Istrazivanje*/
                 spinnerIstrazivanje.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -122,32 +96,18 @@ class FragmentIstrazivanje : Fragment() {
                     }
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                         dugmeIstrazivanje.isEnabled = false
-                        if (listaIstrazivanja[position] == "Istraživanje") {
+                        if (position == 0) {
                             odabranoIstrazivanje = 0
                             odabirIstrazivanja = 0
                         } else {
                             odabranoIstrazivanje = position;
                             odabirIstrazivanja = position
                         }
-                        val listaGrupa = mutableListOf<String>()
-                        listaGrupa.add("Grupa")
                         spinnerGrupa.adapter = ArrayAdapter(inflater.context, android.R.layout.simple_list_item_1, listaGrupa)
 
 
-                        if (odabranoIstrazivanje != 0) {
-                            spinnerGrupa.isEnabled = true
-                            for (P in grupaViewModel.getGroupsByIstrazivanje(listaIstrazivanja[position])) {
-                                listaGrupa.add(P.naziv)
-                            }
-                            spinnerGrupa.adapter = ArrayAdapter(
-                                inflater.context,
-                                android.R.layout.simple_list_item_1,
-                                listaGrupa
-                            )
-                            spinnerGrupa.setSelection(odabranaGrupa)
-                        } else {
-                            spinnerGrupa.isEnabled = false
-                        }
+                        istrazivanjeViewModel.getGrupe(onSuccess = ::onSuccessG, onError = ::onError)
+
 
                         /*Spinner za Grupu*/
                         spinnerGrupa.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -170,11 +130,11 @@ class FragmentIstrazivanje : Fragment() {
                                         porukaIstrazivanje = listaIstrazivanja[odabirIstrazivanja]
                                         //Grupa
                                         porukaGrupa = listaGrupa[odabirGrupe]
-                                        userViewModel.dodajUpisanoIstrazivanje(
+                                        /*userViewModel.dodajUpisanoIstrazivanje(
                                             listaGodina[odabirGodine],
                                             listaIstrazivanja[odabirIstrazivanja],
                                             listaGrupa[odabirGrupe]
-                                        )
+                                        )*/
                                         odabranoIstrazivanje = 0
                                         odabranaGrupa = 0
                                         fragmentAdapter.refreshFragment(1, FragmentPoruka.newInstance(""))
@@ -187,5 +147,57 @@ class FragmentIstrazivanje : Fragment() {
             }
         }
         return view;
+    }
+
+    fun onError() {
+        val toast = Toast.makeText(context, "Error!", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    fun onSuccess(anketica: List<Istrazivanje>) {
+        val listaIstrazivanja = mutableListOf<String>()
+        listaIstrazivanja.add("Istraživanje")
+        if (user.trenutnaGodina != 0) {
+            spinnerIstrazivanje.isEnabled = true
+            var istrazivanjaSaGodine: MutableList<Istrazivanje> = mutableListOf<Istrazivanje>()
+            for (P in anketica) {
+                istrazivanjaSaGodine.add(P)
+            }
+            for (upisan in getUpisani()) {
+                for (P in anketica) {
+                    if (upisan.naziv == P.naziv) {
+                        istrazivanjaSaGodine.remove(upisan)
+                    }
+                }
+            }
+            for (P in istrazivanjaSaGodine) {
+                listaIstrazivanja.add(P.naziv)
+            }
+            spinnerIstrazivanje.adapter= ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,
+                anketica.map { p: Istrazivanje -> p.naziv.toString() })
+            spinnerIstrazivanje.setSelection(odabranoIstrazivanje)
+        } else {
+            spinnerIstrazivanje.isEnabled = false
+        }
+        val toast = Toast.makeText(context, "Istraživanja were found.", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    fun onSuccessG(anketica: List<Grupa>) {
+        val listaGrupa = mutableListOf<String>()
+        listaGrupa.add("Grupa")
+        if (odabranoIstrazivanje != 0) {
+            spinnerGrupa.isEnabled = true
+            for (P in anketica) {
+                listaGrupa.add(P.naziv)
+            }
+            spinnerGrupa.adapter= ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,
+                anketica.map { p: Grupa -> p.naziv.toString() })
+            spinnerGrupa.setSelection(odabranaGrupa)
+        } else {
+            spinnerGrupa.isEnabled = false
+        }
+        val toast = Toast.makeText(context, "Grupe were found.", Toast.LENGTH_SHORT)
+        toast.show()
     }
 }

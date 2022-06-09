@@ -15,7 +15,7 @@ import java.util.*
 
 class AnketaAdapter(
 
-    private var ankete: List<Anketa>,
+    var ankete: List<Anketa>,
     private val onItemClicked: (anketa:Anketa) -> Unit
     ) : RecyclerView.Adapter<AnketaAdapter.AnketaViewHolder>() {
 
@@ -47,9 +47,12 @@ class AnketaAdapter(
 
         /*Formatiranje datuma u formatu dan,mjesec,godina*/
         val formatter = SimpleDateFormat("dd.MM.yyyy")
+        holder.status.setImageResource(R.drawable.zelena)
+        holder.progress.setProgress(((ankete[position].progres*100).toInt()));
+        holder.datum.text = "Vrijeme zatvaranja: ";
 
         /*---Plavi status = Anketa urađena---*/
-        if(ankete[position].datumRada!=null){
+        /*if(ankete[position].datumRada!=null){
             holder.status.setImageResource(R.drawable.plava)
             holder.progress.setProgress(((ankete[position].progres*100).toInt()));
             holder.datum.text = "Anketa urađena: " + formatter.format(ankete[position].datumRada).toString();
@@ -74,7 +77,7 @@ class AnketaAdapter(
             holder.status.setImageResource(R.drawable.crvena)
             holder.progress.setProgress(((ankete[position].progres*100).toInt()));
             holder.datum.text = "Anketa zatvorena: " + formatter.format(ankete[position].datumPocetak).toString();
-        }
+        }*/
 
         holder.istrazivanja.text = ankete[position].nazivIstrazivanja;
         holder.naziv.text = ankete[position].naziv;

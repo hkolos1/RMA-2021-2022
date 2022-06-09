@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,12 +34,13 @@ class FragmentAnkete : Fragment() {
     //Funkcija za odabir tipa Ankete
     private fun izaberiAnketu(position: Int){
         if(position==0){
-            anketaAdapter.updateAnkete(anketaViewModel.getMyAnkete())
+            anketaViewModel.getUpisane( onSuccess = ::onSuccess,onError = ::onError)
         }
         else if(position==1){
-            anketaAdapter.updateAnkete(anketaViewModel.getAll())
+            anketaViewModel.getAll(onSuccess = ::onSuccess,onError = ::onError)
+            //anketaAdapter.updateAnkete(anketaViewModel.getAll())
         }
-        else if(position==2){
+        /*else if(position==2){
             anketaAdapter.updateAnkete(anketaViewModel.getDone())
         }
         else if(position==3){
@@ -46,7 +48,7 @@ class FragmentAnkete : Fragment() {
         }
         else if(position==4){
             anketaAdapter.updateAnkete(anketaViewModel.getNotTaken())
-        }
+        }*/
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,7 +60,7 @@ class FragmentAnkete : Fragment() {
         anketaAdapter = AnketaAdapter(arrayListOf()) { anketa-> dodajPitanja(anketa) }
         //anketaAdapter = AnketaAdapter(arrayListOf(), dodaj())
         ankete.adapter = anketaAdapter
-        anketaAdapter.updateAnkete(anketaViewModel.getAll())
+        //anketaAdapter.updateAnkete(anketaViewModel.getAll())
 
         spinner = view.findViewById(R.id.filterAnketa)
         val opcije = listOf("Sve moje ankete", "Sve ankete", "Urađene ankete", "Buduće ankete", "Prošle ankete")
@@ -78,9 +80,21 @@ class FragmentAnkete : Fragment() {
         izaberiAnketu(0)
     }
 
+    fun onError() {
+        val toast = Toast.makeText(context, "Error!", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+    fun onSuccess(anketaaa: List<Anketa>) {
+        val toast = Toast.makeText(context, "Ankete were found.", Toast.LENGTH_SHORT)
+        toast.show()
+        anketaAdapter.ankete = anketaaa
+        ankete.adapter?.notifyDataSetChanged()
+
+    }
+
     //Funkcija za load pitanja iz Liste i navigiranje kroz fragmente pitanja
     fun dodajPitanja(Anketa: Anketa){
-        if(!AnketaRepository.getMyAnkete().contains(Anketa)){
+        /*if(!AnketaRepository.getMyAnkete().contains(Anketa)){
             var lista : List<Pitanje>
             lista = PitanjeAnketaRepository.getPitanja(Anketa.naziv, Anketa.nazivIstrazivanja)
             fragmentAdapter.refreshFragment(0,FragmentPitanje.newInstance(lista[0],fragmentAdapter))
@@ -88,6 +102,6 @@ class FragmentAnkete : Fragment() {
             fragmentAdapter.add(2,FragmentPitanje.newInstance(lista[2], fragmentAdapter))
             fragmentAdapter.add(3, FragmentPredaj.newInstance(Anketa , fragmentAdapter))
             fragmentAdapter.notifyDataSetChanged()
-        }
+        }*/
     }
 }
