@@ -33,11 +33,11 @@ class FragmentAnkete : Fragment() {
 
     //Funkcija za odabir tipa Ankete
     private fun izaberiAnketu(position: Int){
-        if(position==0){
+        if(position==1){
             anketaViewModel.getUpisane( onSuccess = ::onSuccess,onError = ::onError)
         }
-        else if(position==1){
-            anketaViewModel.getAll(onSuccess = ::onSuccess,onError = ::onError)
+        else if(position==0){
+            anketaViewModel.getAll(context!!,onSuccess = ::onSuccess,onError = ::onError)
             //anketaAdapter.updateAnkete(anketaViewModel.getAll())
         }
         /*else if(position==2){
@@ -63,7 +63,7 @@ class FragmentAnkete : Fragment() {
         //anketaAdapter.updateAnkete(anketaViewModel.getAll())
 
         spinner = view.findViewById(R.id.filterAnketa)
-        val opcije = listOf("Sve moje ankete", "Sve ankete", "Urađene ankete", "Buduće ankete", "Prošle ankete")
+        val opcije = listOf("Sve ankete", "Sve moje ankete", "Urađene ankete", "Buduće ankete", "Prošle ankete")
         spinner.adapter = ArrayAdapter(ankete.context, android.R.layout.simple_list_item_1, opcije)
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -81,12 +81,8 @@ class FragmentAnkete : Fragment() {
     }
 
     fun onError() {
-        val toast = Toast.makeText(context, "Error!", Toast.LENGTH_SHORT)
-        toast.show()
     }
     fun onSuccess(anketaaa: List<Anketa>) {
-        val toast = Toast.makeText(context, "Ankete were found.", Toast.LENGTH_SHORT)
-        toast.show()
         anketaAdapter.ankete = anketaaa
         ankete.adapter?.notifyDataSetChanged()
 

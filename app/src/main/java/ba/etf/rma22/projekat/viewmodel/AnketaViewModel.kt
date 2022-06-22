@@ -1,7 +1,9 @@
 package ba.etf.rma22.projekat.viewmodel
 
+import android.content.Context
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.repositories.AnketaRepository
+import ba.etf.rma22.projekat.data.repositories.IstrazivanjeIGrupaRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -10,8 +12,12 @@ import kotlinx.coroutines.launch
 class AnketaViewModel {
     val scope = CoroutineScope(Job() + Dispatchers.Main)
 
-    fun getAll(onSuccess: (ankete: List<Anketa>) -> Unit, onError: () -> Unit, offset : Int = 0){
+    fun getAll(Context: Context, onSuccess: (ankete: List<Anketa>) -> Unit, onError: () -> Unit, offset : Int = 0){
         scope.launch{
+            IstrazivanjeIGrupaRepository.setContext(Context)
+            IstrazivanjeIGrupaRepository.getGrupe()
+            IstrazivanjeIGrupaRepository.getIstrazivanja(1)
+            AnketaRepository.setContext(Context)
             val result = AnketaRepository.getAll(offset)
             when (result) {
                 is List<Anketa> -> onSuccess?.invoke(result!!)

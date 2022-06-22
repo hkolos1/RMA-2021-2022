@@ -85,7 +85,7 @@ class FragmentIstrazivanje : Fragment() {
 
                 spinnerIstrazivanje.adapter = ArrayAdapter(inflater.context, android.R.layout.simple_list_item_1, listaIstrazivanja)
 
-                istrazivanjeViewModel.getIstrazivanja(1,onSuccess = ::onSuccess, onError = ::onError)
+                istrazivanjeViewModel.getIstrazivanja(context!!,1,onSuccess = ::onSuccess, onError = ::onError)
 
 
 
@@ -106,7 +106,7 @@ class FragmentIstrazivanje : Fragment() {
                         spinnerGrupa.adapter = ArrayAdapter(inflater.context, android.R.layout.simple_list_item_1, listaGrupa)
 
 
-                        istrazivanjeViewModel.getGrupe(onSuccess = ::onSuccessG, onError = ::onError)
+                        istrazivanjeViewModel.getGrupe(context!!,onSuccess = ::onSuccessG, onError = ::onError)
 
 
                         /*Spinner za Grupu*/
@@ -126,7 +126,7 @@ class FragmentIstrazivanje : Fragment() {
                                     /*Dugme za upis na istraživanje i grupu*/
                                     dugmeIstrazivanje.setOnClickListener() {
 
-                                        //Istraživanje
+                                        /*Istraživanje
                                         porukaIstrazivanje = listaIstrazivanja[odabirIstrazivanja]
                                         //Grupa
                                         porukaGrupa = listaGrupa[odabirGrupe]
@@ -136,7 +136,7 @@ class FragmentIstrazivanje : Fragment() {
                                             listaGrupa[odabirGrupe]
                                         )*/
                                         odabranoIstrazivanje = 0
-                                        odabranaGrupa = 0
+                                        odabranaGrupa = 0*/
                                         fragmentAdapter.refreshFragment(1, FragmentPoruka.newInstance(""))
                                     }
                                 }

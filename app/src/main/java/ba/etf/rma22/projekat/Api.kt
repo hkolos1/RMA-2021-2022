@@ -7,6 +7,9 @@ import retrofit2.http.*
 
 interface Api {
 
+    @GET("student/{id}")
+    suspend fun dajAccount(@Path("id") id: String): Account
+
     @GET("anketa")
     suspend fun dajSveAnkete(@Query("offset") id : Int): Response<List<Anketa>>
 

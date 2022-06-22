@@ -1,8 +1,10 @@
 package ba.etf.rma22.projekat.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import ba.etf.rma22.projekat.data.models.Grupa
 import ba.etf.rma22.projekat.data.models.Istrazivanje
+import ba.etf.rma22.projekat.data.repositories.AccountRepository
 import ba.etf.rma22.projekat.data.repositories.IstrazivanjeIGrupaRepository
 import ba.etf.rma22.projekat.data.repositories.IstrazivanjeRepository
 import kotlinx.coroutines.*
@@ -12,8 +14,10 @@ class IstrazivanjeViewModel {
     var grupeZaIstrazivanje = MutableLiveData<List<Grupa>?>()
 
 
-    fun getIstrazivanja(offset : Int, onSuccess: (ankete: List<Istrazivanje>) -> Unit, onError: () -> Unit){
+    fun getIstrazivanja(Context: Context, offset : Int, onSuccess: (ankete: List<Istrazivanje>) -> Unit, onError: () -> Unit){
         scope.launch{
+            IstrazivanjeIGrupaRepository.setContext(Context)
+            IstrazivanjeIGrupaRepository.getIstrazivanja(1)
             val result = IstrazivanjeIGrupaRepository.getIstrazivanja(offset)
             when (result) {
                 is List<Istrazivanje> -> onSuccess?.invoke(result!!)
@@ -22,8 +26,10 @@ class IstrazivanjeViewModel {
         }
     }
 
-    fun getGrupe(onSuccess: (ankete: List<Grupa>) -> Unit, onError: () -> Unit){
+    fun getGrupe(Context: Context, onSuccess: (ankete: List<Grupa>) -> Unit, onError: () -> Unit){
         scope.launch{
+            IstrazivanjeIGrupaRepository.setContext(Context)
+            IstrazivanjeIGrupaRepository.getGrupe()
             val result = IstrazivanjeIGrupaRepository.getGrupe()
             when (result) {
                 is List<Grupa> -> onSuccess?.invoke(result!!)
@@ -61,6 +67,15 @@ class IstrazivanjeViewModel {
             val result = IstrazivanjeIGrupaRepository.getUpisaneGrupe()
             when (result) {
                 is List<Grupa> -> onSuccess?.invoke(result)
+                else -> onError?.invoke()
+            }
+        }
+    }
+    fun promijeniHash(hash: String, onSuccess: () -> Unit, onError: () -> Unit){
+        GlobalScope.launch{
+            val accUpisan = AccountRepository().postaviHash(hash)
+            when(accUpisan){
+                is Boolean-> onSuccess?.invoke()
                 else -> onError?.invoke()
             }
         }

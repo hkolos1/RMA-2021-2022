@@ -48,7 +48,9 @@ class AnketaAdapter(
         /*Formatiranje datuma u formatu dan,mjesec,godina*/
         val formatter = SimpleDateFormat("dd.MM.yyyy")
         holder.status.setImageResource(R.drawable.zelena)
-        holder.progress.setProgress(((ankete[position].progres*100).toInt()));
+        holder.progress.setProgress(60
+            //(ankete[position].progres!!.times(100)).toInt()
+        );
         holder.datum.text = "Vrijeme zatvaranja: ";
 
         /*---Plavi status = Anketa urađena---*/

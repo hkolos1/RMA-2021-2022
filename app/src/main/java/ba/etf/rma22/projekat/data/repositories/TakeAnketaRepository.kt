@@ -1,5 +1,6 @@
 package ba.etf.rma22.projekat.data.repositories
 
+import android.content.Context
 import ba.etf.rma22.projekat.data.models.AnketaTaken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -7,6 +8,10 @@ import kotlin.math.roundToInt
 
 class TakeAnketaRepository {
     companion object {
+        private lateinit var context: Context
+        fun setContext(_context: Context) {
+            context = _context
+        }
         suspend fun zapocniAnketu(idAnketa: Int): AnketaTaken? {
             return withContext(Dispatchers.IO) {
                 var response = ApiAdapter.retrofit.zapocniAnketu(idAnketa)

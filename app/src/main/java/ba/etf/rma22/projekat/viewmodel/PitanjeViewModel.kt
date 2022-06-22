@@ -1,7 +1,9 @@
 package ba.etf.rma22.projekat.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import ba.etf.rma22.projekat.data.models.Pitanje
+import ba.etf.rma22.projekat.data.repositories.IstrazivanjeIGrupaRepository
 import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,8 +15,10 @@ class PitanjeViewModel {
         Job() + Dispatchers.Main)
 
     var pitanja = MutableLiveData<List<Pitanje>>()
-    fun dajPitanja(onSuccess: (pitanja: List<Pitanje>) -> Unit, onError: () -> Unit, idAnketa : Int) {
+    fun dajPitanja(Context: Context, onSuccess: (pitanja: List<Pitanje>) -> Unit, onError: () -> Unit, idAnketa : Int) {
         scope.launch {
+            PitanjeAnketaRepository.setContext(Context)
+            PitanjeAnketaRepository.getPitanja(idAnketa)
             val result = PitanjeAnketaRepository.getPitanja(idAnketa)
             when (result) {
                 is List<Pitanje> -> {

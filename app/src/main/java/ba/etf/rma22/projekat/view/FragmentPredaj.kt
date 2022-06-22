@@ -53,12 +53,12 @@ class FragmentPredaj(var anketa: Anketa) : Fragment() {
 
         predajDugme = view.findViewById(R.id.dugmePredaj)
         progressBar = view.findViewById(R.id.progresText)
-        if(anketa.datumRada != null || anketa.datumKraj.before(Date())){
+        if(anketa.datumRada != null){
                 predajDugme.isEnabled = true;
         }
 
         //Prikazuje postotak i progres ankete na zadnjem fragmentu
-        progressBar.text = zaokruziProgress(anketa.progres).toString()+"%"
+       // progressBar.text = zaokruziProgress(anketa.progres).toString()+"%"
 
 
         //Predaje anketu i ispisuje poruku

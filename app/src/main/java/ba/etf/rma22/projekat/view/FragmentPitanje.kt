@@ -42,8 +42,8 @@ class FragmentPitanje(pitanje: Pitanje, adapter: ViewPagerAdapter) : Fragment() 
         tekst.text = pitanje.tekstPitanja
         listaOdgovora = view.findViewById(R.id.odgovoriLista)
         dugmeZaustavi = view.findViewById(R.id.dugmeZaustavi)
-        listaOdgovora.adapter =
-            ArrayAdapter(inflater.context, android.R.layout.simple_list_item_1, pitanje.opcije)
+        /*listaOdgovora.adapter =
+            ArrayAdapter(inflater.context, android.R.layout.simple_list_item_1, pitanje.opcije)*/
 
         listaOdgovora.setOnItemClickListener{ parent: AdapterView<*>, view: View, position: Int, id ->
             //oboji samo prvo kliknuto polje
